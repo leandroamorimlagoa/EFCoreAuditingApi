@@ -28,6 +28,8 @@ To set up and run the project, follow these steps:
 3. Restore the packages.
 5. Press `F5` to run the project.
 
+The swagger will open, and you can test the endpoints.
+
 The database storage role is handled by DbContext `BusinessContext` with InMemory database, 
 
 Also with the `AuditingDatabase` class that simulates the audit database.

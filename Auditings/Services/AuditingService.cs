@@ -17,9 +17,6 @@ namespace AuditingApi.Auditings.Services
         {
             Task.Run(() =>
             {
-                var auditableProperties = typeof(AuditableEntity).GetProperties();
-                auditEntry.Changes = auditEntry.Changes.FindAll(c => !auditableProperties.Any(p => p.Name == c.PropertyName));
-
                 this.auditingDatabase.RegisterAuditedEntity(auditEntry);
             });
         }

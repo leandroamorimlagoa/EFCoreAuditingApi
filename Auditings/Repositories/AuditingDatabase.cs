@@ -6,9 +6,17 @@ namespace AuditingApi.Auditings.Repositories
     public class AuditingDatabase
     {
         private Dictionary<string, List<AuditedEntity>> _AuditedEntities = new Dictionary<string, List<AuditedEntity>>();
+        private readonly List<string> AuditableEntityProperties;
+
+        public AuditingDatabase()
+        {
+
+            this.AuditableEntityProperties = typeof(AuditableEntity).GetProperties().Select(p=>p.Name).ToList();
+        }
 
         public void RegisterAuditedEntity(AuditedEntity auditedEntity)
         {
+            auditedEntity.RemoveChangedProperties(this.AuditableEntityProperties);
             if (!_AuditedEntities.ContainsKey(auditedEntity.EntityName))
             {
                 _AuditedEntities.Add(auditedEntity.EntityName, new List<AuditedEntity>());

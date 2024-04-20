@@ -31,31 +31,9 @@ namespace AuditingApi.Contexts
 
                 var auditEntry = new AuditedEntity(entry);
 
-                foreach (var property in entry.Properties)
-                {
-                    var propertyName = property.Metadata.Name;
-                    if (propertyName == "Id")
-                    {
-                        auditEntry.SetEntityId(property.CurrentValue);
-                    }
-
-                    if (property.IsModified || entry.State == EntityState.Added || entry.State == EntityState.Deleted)
-                    {
-                        var originalValue = entry.State == EntityState.Added ? string.Empty : property.OriginalValue?.ToString();
-                        var currentValue = entry.State == EntityState.Deleted ? string.Empty : property.CurrentValue?.ToString();
-
-                        auditEntry.Changes.Add(new AuditedChanges
-                        {
-                            PropertyName = propertyName,
-                            OriginalValue = originalValue ?? string.Empty,
-                            CurrentValue = currentValue ?? string.Empty
-                        });
-                    }
-                }
 
                 if (auditEntry.Changes.Count > 0)
                     this.auditingService.RegisterAuditing(auditEntry);
-
             }
             return base.SaveChanges(acceptAllChangesOnSuccess);
         }
